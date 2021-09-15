@@ -1,0 +1,33 @@
+<nav class="limiter-menu-desktop container">
+
+    <!-- Logo desktop -->
+    <a href="/" class="logo">
+        <img src="/images/icons/logo-01.png" alt="IMG-LOGO">
+    </a>
+
+    <!-- Menu desktop -->
+    <div class="menu-desktop">
+        <ul class="main-menu">
+            <li class="<%= path === '/' ? 'active-menu' : '' %>"><a href="/">Home</a></li>
+            <li class="<%= path === '/products' ? 'active-menu' : '' %>"><a href="/products">Product</a></li>
+            <li class="<%= path === '/blog' ? 'active-menu' : '' %> label1" data-label1="new"><a href="/blog">Blog</a>
+            </li>
+            <li class="<%= path === '/about' ? 'active-menu' : '' %>"><a href="/about">About</a></li>
+            <li class="<%= path === '/contact' ? 'active-menu' : '' %>"><a href="/contact">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Icon header -->
+    <div class="wrap-icon-header flex-w flex-r-m">
+        <% if(path !== '/checkout' && path !== '/orders'){ %>
+        <a href="/cart" id="cart-total-desktop"
+            class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
+            <% if(session.cart) { %> data-notify="
+                <%= session.cart.totalQty%>" <% } else if(user) { %> <% if(!user.cart.totalQty) { %> data-notify="0"
+            <% } else { %> data-notify="
+                                <%= user.cart.totalQty %>" <% } %> <% } else { %>data-notify="0" <% } %>>
+            <i class="zmdi zmdi-shopping-cart"></i>
+        </a>
+        <% } %>
+    </div>
+</nav>

@@ -1,0 +1,293 @@
+<%- include('../includes-user/begin.ejs') %>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header-v4">
+        <!-- Header desktop -->
+        <div class="container-menu-desktop">
+            <%- include('../includes-user/top-bar.ejs',{isAuthenticated:isAuthenticated,user:user}) %>
+
+
+            <div class="wrap-menu-desktop how-shadow1">
+                <%- include('../includes-user/navigation.ejs',{user:user}) %>
+            </div>
+        </div>
+
+        <%- include('../includes-user/head-mobile.ejs',{isAuthenticated:isAuthenticated,user:user}) %>
+    </header>
+
+    <!-- Product -->
+    <div class="bg0 m-t-23">
+        <div class="container">
+
+            <div class="flex-w flex-sb-m p-b-52">
+                <div class="flex-w flex-c-m m-tb-10">
+                    <div
+                        class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
+                        <i class="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"></i>
+                        <i class="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i> Filter
+                    </div>
+
+                    <div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
+                        <i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
+                        <i class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i> Search
+                    </div>
+                </div>
+
+                <!-- Search product -->
+
+                <div class="dis-none panel-search w-full p-t-10 p-b-15">
+                    <form action="/products" method="POST">
+                        <div class="bor8 dis-flex p-l-15">
+                            <button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
+                                <i class="zmdi zmdi-search"></i>
+                            </button>
+                            <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search"
+                                placeholder="Search">
+                        </div>
+                    </form>
+                </div>
+                <!-- Filter -->
+                <div class="dis-none panel-filter w-full p-t-10">
+                    <form id="filter-form" action="/products" method="POST">
+                        <div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
+                            <div class="filter-col1 p-r-15 p-b-27">
+                                <div class="mtext-102 cl2 p-b-15">
+                                    Sort By
+                                </div>
+
+                                <ul>
+                                    <input type="text" name="sort" id="sortBody" value="<%=sort %>" hidden>
+                                    <li class="p-b-6">
+                                        <button
+                                            class="filter-link stext-106 trans-04 <% if(sort === 'viewCount') { %>filter-link-active<% } %>"
+                                            value="viewCount" onclick="getSort(this,event)">Popularity</a>
+                                    </li>
+                                    <li class="p-b-6">
+                                        <button
+                                            class="filter-link stext-106 trans-04 <% if(sort === 'hasSold') { %>filter-link-active<% } %>"
+                                            value="hasSold" onclick="getSort(this,event)">Best Sold</a>
+                                    </li>
+                                    <li class="p-b-6">
+                                        <button
+                                            class="filter-link stext-106 trans-04  <% if(sort === 'lowtohigh') { %>filter-link-active<% } %>"
+                                            value="lowtohigh" onclick="getSort(this,event)">Price: Low to High</a>
+                                    </li>
+                                    <li class="p-b-6">
+                                        <button
+                                            class="filter-link stext-106 trans-04  <% if(sort === 'hightolow') { %>filter-link-active<% } %>"
+                                            value="hightolow" onclick="getSort(this,event)">Price: High to Low</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="filter-col2 p-r-15 p-b-27">
+                                <div class="mtext-102 cl2 p-b-15">
+                                    Price
+                                </div>
+
+                                <ul>
+                                    <input type="text" name="lowestPrice" id="lowestPriceBody" value="<%=low %>" hidden>
+                                    <input type="text" name="highestPrice" id="highestPriceBody" value="<%=high %>"
+                                        hidden>
+                                    <li class="p-b-6">
+                                        <button
+                                            class="filter-link stext-106 trans-04 <% if(priceRange === '0') { %>filter-link-active<% } %>"
+                                            value="0" onclick="getPrice(this,event)">All</button>
+                                    </li>
+
+                                    <li class="p-b-6">
+                                        <button
+                                            class="filter-link stext-106 trans-04 <% if(priceRange === '0-50') { %>filter-link-active<% } %>"
+                                            value="0-50" onclick="getPrice(this,event)"> $0.00 - $50.00</button>
+                                    </li>
+
+                                    <li class="p-b-6">
+                                        <button
+                                            class="filter-link stext-106 trans-04 <% if(priceRange === '50-100') { %>filter-link-active<% } %>"
+                                            value="50-100" onclick="getPrice(this,event)">$50.00 - $100.00</button>
+                                    </li>
+
+                                    <li class="p-b-6">
+                                        <button
+                                            class="filter-link stext-106 trans-04 <% if(priceRange === '100-150') { %>filter-link-active<% } %>"
+                                            value="100-150" onclick="getPrice(this,event)">$100.00 - $150.00</button>
+                                    </li>
+
+                                    <li class="p-b-6">
+                                        <button
+                                            class="filter-link stext-106 trans-04 <% if(priceRange === '150-200') { %>filter-link-active<% } %>"
+                                            value="150-200" onclick="getPrice(this,event)">$150.00 - $200.00</button>
+                                    </li>
+
+                                    <li class="p-b-6">
+                                        <button
+                                            class="filter-link stext-106 trans-04 <% if(priceRange === '200') { %>filter-link-active<% } %>"
+                                            value="200" onclick="getPrice(this,event)">$200.00+</button>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="filter-col3 p-r-15 p-b-27">
+                                <div class="mtext-102 cl2 p-b-15">
+                                    Color
+                                </div>
+
+                                <ul>
+                                    <input type="text" name="color" value="<%=color %>" id="colorBody" hidden>
+                                    <li class="p-b-6">
+                                        <span class="fs-15 lh-12 m-r-6" style="color: #222;">
+                                            <i class="zmdi zmdi-circle"></i>
+                                        </span>
+                                        <button
+                                            class="filter-link stext-106 trans-04 <% if(color === 'Black') { %>filter-link-active<% } %>"
+                                            onclick="getColor(this,event)">Black</button>
+                                    </li>
+                                    <li class="p-b-6">
+                                        <span class="fs-15 lh-12 m-r-6" style="color: #4272d7;">
+                                            <i class="zmdi zmdi-circle"></i>
+                                        </span>
+                                        <button
+                                            class="filter-link stext-106 trans-04 <% if(color === 'Blue') { %>filter-link-active<% } %>"
+                                            onclick="getColor(this,event)">Blue</button>
+                                    </li>
+                                    <li class="p-b-6">
+                                        <span class="fs-15 lh-12 m-r-6" style="color: #b3b3b3;">
+                                            <i class="zmdi zmdi-circle"></i>
+                                        </span>
+                                        <button
+                                            class="filter-link stext-106 trans-04 <% if(color === 'Grey') { %>filter-link-active<% } %>"
+                                            onclick="getColor(this,event)">Grey</button>
+                                    </li>
+                                    <li class="p-b-6">
+                                        <span class="fs-15 lh-12 m-r-6" style="color: #00ad5f;">
+                                            <i class="zmdi zmdi-circle"></i>
+                                        </span>
+                                        <button
+                                            class="filter-link stext-106 trans-04 <% if(color === 'Green') { %>filter-link-active<% } %>"
+                                            onclick="getColor(this,event)">Green</button>
+                                    </li>
+                                    <li class="p-b-6">
+                                        <span class="fs-15 lh-12 m-r-6" style="color: #fa4251;">
+                                            <i class="zmdi zmdi-circle"></i>
+                                        </span>
+                                        <button
+                                            class="filter-link stext-106 trans-04 <% if(color === 'Red') { %>filter-link-active<% } %>"
+                                            onclick="getColor(this,event)">Red</button>
+                                    </li>
+                                    <li class="p-b-6">
+                                        <span class="fs-15 lh-12 m-r-6" style="color: #aaa;">
+                                            <i class="zmdi zmdi-circle-o"></i>
+                                        </span>
+                                        <button
+                                            class="filter-link stext-106 trans-04 <% if(color === 'White') { %>filter-link-active<% } %>"
+                                            onclick="getColor(this,event)">White</button>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="filter-col4 p-b-27">
+                                <div class="mtext-102 cl2 p-b-15">
+                                    Tags
+                                </div>
+                                <div class="flex-w p-t-4 m-r--5">
+                                    <input type="text" name="tag" value="<%=tag %>" id="tagBody" hidden>
+                                    <button
+                                        class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5 <% if(tag === 'woman') { %>filter-tag-active<% } %>"
+                                        onclick="getTag(this,event)">Women</button>
+                                    <button
+                                        class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5 <% if(tag === 'men') { %>filter-tag-active<% } %>"
+                                        onclick="getTag(this,event)">Men</button>
+                                    <button
+                                        class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5 <% if(tag === 'jacket') { %>filter-tag-active<% } %>"
+                                        onclick="getTag(this,event)">Jacket</button>
+                                    <button
+                                        class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5 <% if(tag === 'bag') { %>filter-tag-active<% } %>"
+                                        onclick="getTag(this,event)">Bag</button>
+                                </div>
+                            </div>
+                            <button class="remove-filter" onclick="removeFilter(event)">Remove filter</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <% if (products.length > 0) { %>
+            <div class="row isotope-grid">
+                <% for (let product of products) { %>
+                <div class="product-list col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item <%=product.filter %> ">
+                    <!-- Block2 -->
+                    <div class="block2">
+                        <span id="filter_<%=product._id%>" hidden><%=product.filter %></span>
+                        <a class="productId hidden">
+                            <%=product._id %>
+                        </a>
+                        <div class="block2-pic hov-img0">
+                            <img style="border: 0.5px solid rgb(216, 216, 216);" src="<%=product.imageUrl.detail_1 %>"
+                                alt="IMG-PRODUCT" class="product__img">
+                            <p class="product__img hidden">
+                                <%=product.imageUrl.detail_2 %>
+                            </p>
+                            <p class="product__img hidden">
+                                <%=product.imageUrl.detail_3 %>
+                            </p>
+                            <span class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 
+                                            trans-04 js-show-modal1">
+                                Quick View</span>
+                        </div>
+                        <div class="block2-txt flex-w flex-t p-t-14">
+                            <div class="block2-txt-child1 flex-col-l ">
+                                <a href="/products/<%=product._id %>" class="stext-104 cl4 hov-cl1 
+                                                trans-04 js-name-b2 p-b-6 " id="product__name">
+                                    <%=product.name  %>
+                                </a>
+                                <span class="stext-105 cl3 product__price">$<%=product.price  %></span>
+                            </div>
+                            <div class="block2-txt-child2 flex-r p-t-3 ">
+                                <div class="block2-txt-child2 flex-r p-t-3">
+                                    <p><i class="fa fa-eye"></i>&nbsp;<span
+                                            style="font-size: 13px;"><%=product.viewCount %></span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <% for(let size of product.size) { %>
+                        <p class="size_arr" hidden>
+                            <%=size %>
+                        </p>
+                        <% } %>
+                        <% for(let color of product.color) { %>
+                        <p class="color_arr" hidden>
+                            <%=color %>
+                        </p>
+                        <% } %>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+            <%- include('../includes-user/pagination.ejs',
+                        {currentPage:currentPage,
+                        prevPage:prevPage,
+                        hasPrevPage:hasPrevPage,
+                        hasNextPage:hasNextPage,
+                        nextPage:nextPage,
+                        sort:sort,
+                        low:low,
+                        high:high,
+                        color:color,
+                        tag:tag}) %>
+            <% } else { %>
+            <h1 style="text-align: center; margin-bottom: 35px;">No Product Found!</h1>
+            <% } %>
+        </div>
+    </div>
+    <%- include('../includes-user/footer.ejs') %>
+    <%- include('../includes-user/back-to-top.ejs') %>
+    <%- include('../includes-user/preview-modal.ejs') %>
+    <%- include('../includes-user/script.ejs') %>
+    <script src="/js/preview-modal.js"></script>
+    <script src="/js/filter.js"></script>
+    <script src="/js/pagination.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="/ajax/cartAjax.js"></script>
+    <%- include('../includes-user/end.ejs') %>

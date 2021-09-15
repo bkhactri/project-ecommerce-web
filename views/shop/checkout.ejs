@@ -1,0 +1,282 @@
+<%- include('../includes-user/begin.ejs') %>
+<link rel="stylesheet" href="/css/setting-user.css" type="text/css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header-v4">
+        <!-- Header desktop -->
+        <div class="container-menu-desktop">
+            <%- include('../includes-user/top-bar.ejs',{isAuthenticated:isAuthenticated,user:user}) %>
+            <div class="wrap-menu-desktop how-shadow1">
+                <%- include('../includes-user/navigation.ejs',{user:user}) %>
+            </div>
+        </div>
+
+        <%- include('../includes-user/head-mobile.ejs',{isAuthenticated:isAuthenticated,user:user}) %>
+    </header>
+
+    <!-- breadcrumb -->
+    <div class="container">
+        <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+            <a href="/" class="stext-109 cl8 hov-cl1 trans-04">
+                Home
+                <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+            </a>
+
+            <span class="stext-109 cl4">
+                <%=pageTitle  %>
+            </span>
+        </div>
+    </div>
+
+    <section class="checkout spad">
+        <div class="container">
+            <div class="checkout__form">
+                <form id="order-form" action="/create-order" method="POST">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6">
+                            <h6 class="checkout__title">Billing Details</h6>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="checkout__input">
+                                        <label for="name" style="margin-bottom: 10px;">Full Name<span
+                                                style="color: red;">*</span></label>
+                                        <input type="text" name="name" value="<%= user.name %>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row py-2" style="margin-bottom: 20px;">
+                                <div class="col-md-6">
+                                    <label for="calc_shipping_provinces" style="margin-bottom: 10px;">
+                                        City<span style="color: red;">*</span>
+                                        <span id="warning-4" style="color: red; font-style: italic;"></span>
+                                    </label>
+                                    <select name="calc_shipping_provinces" id="provinces" class="bg-light" required="">
+                                        <option value=""></option>
+                                    </select>
+                                    <input class="billing_address_1" name="" type="hidden" value="">
+                                </div>
+                                <div class="col-md-6 pt-md-0 pt-3">
+                                    <label for="calc_shipping_district" style="margin-bottom: 10px;">
+                                        District<span style="color: red;">*</span>
+                                        <span id="warning-5" style="color: red; font-style: italic;"></span>
+                                    </label>
+                                    <select name="calc_shipping_district" id="district" class="bg-light" required="">
+                                        <option value=""></option>
+                                    </select>
+                                    <input class="billing_address_2" name="" type="hidden" value="">
+                                </div>
+                            </div>
+                            <div class="checkout__input">
+                                <label for="address" style="margin-bottom: 10px;">
+                                    Address<span style="color: red;">*</span>&nbsp;
+                                    <span id="warning-1" style="color: red; font-style: italic;"></span>
+                                </label>
+                                <input type="text" id="address" name="address" placeholder="Street Address"
+                                    class="checkout__input__add">
+                                <input type="text" name="address_detail"
+                                    placeholder="Apartment, suite, unite ect (optinal)">
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <label for="phone" style="margin-bottom: 10px;">
+                                            Phone<span style="color: red;">*</span>&nbsp;
+                                            <span id="warning-2" style="color: red; font-style: italic;"></span>
+                                        </label>
+                                        <input type="text" id="phone" name="phone" value="<%= user.phone %>">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <label for="email" style="margin-bottom: 10px;">
+                                            Email<span style="color: red;">*</span>&nbsp;
+                                            <span id="warning-3" style="color: red; font-style: italic;"></span>
+                                        </label>
+                                        <input type="text" id="email" name="email" value="<%= user.email %>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="checkout__input">
+                                <label for="notes" style="margin-bottom: 10px;">Order notes</label>
+                                <input type="text" name="notes"
+                                    placeholder="Notes about your order, e.g. special notes for delivery.">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="checkout__order">
+                                <h4 class="order__title">Your order</h4>
+                                <div class="checkout__order__products">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <strong>Product</strong>
+                                        </div>
+                                        <div class="col-lg-2" style="text-align: center;">
+                                            <strong>Size</strong>
+                                        </div>
+                                        <div class="col-lg-2" style="text-align: center;">
+                                            <strong>Color</strong>
+                                        </div>
+                                        <div class="col-lg-2" style="text-align: center;">
+                                            <strong>Qty</strong>
+                                        </div>
+                                        <div class="col-lg-2" style="text-align: center;">
+                                            <strong>Total</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul class="checkout__total__products">
+                                    <% products.forEach(p => { %>
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <%= p.productId.name %>
+                                            </div>
+                                            <div class="col-lg-2" style="text-align: center;">
+                                                <%= p.size %>
+                                            </div>
+                                            <div class="col-lg-2" style="text-align: center;">
+                                                <%= p.color %>
+                                            </div>
+                                            <div class="col-lg-2" style="text-align: center;">
+                                                <%= p.quantity %>
+                                            </div>
+                                            <div class="col-lg-2" style="text-align: center;">
+                                                $
+                                                <%= p.productId.price %>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <% }) %>
+                                </ul>
+                                <ul class="checkout__total__all">
+                                    <li>Subtotal <span>$ <%= totalOrder.toFixed(2) %> </span></li>
+                                    <li>Coupon <span></span></li>
+                                    <li>Total <span>$ <%= totalOrder.toFixed(2) %></span></li>
+                                </ul>
+                                <h6 class="checkout__title" style="border: none;padding: 0;margin-bottom: 20px;">Payment
+                                    methods</h6>
+                                <div class="checkout__input__checkbox">
+                                    <label for="cod">
+                                        Receive money on delivery
+                                        <input type="radio" id="cod" name="payment">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="checkout__input__checkbox">
+                                    <label for="card">
+                                        Visa / Home Credit / Master Card
+                                        <input type="radio" id="card" name="payment">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <button id="order-button" style="margin-top: 35px;"
+                                    class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
+                                    type="submit">
+                                    Place Order
+                                    <p id="sessionId" hidden><%=sessionId %></p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- Checkout Section End -->
+
+    <%- include('../includes-user/footer.ejs') %>
+    <%- include('../includes-user/back-to-top.ejs') %>
+    <%- include('../includes-user/preview-modal.ejs') %>
+    <%- include('../includes-user/script.ejs') %>
+    <script src="/js/cart-function.js"></script>
+    <script src='https://cdn.jsdelivr.net/gh/vietblogdao/js/districts.min.js'></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="/js/checkout-function.js"></script>
+    <script>
+        //<![CDATA[
+        window.addEventListener('load', function () {
+            if (address_2 = localStorage.getItem('address_2_saved')) {
+                $('select[name="calc_shipping_district"] option').each(function () {
+                    if ($(this).text() == address_2) {
+                        $(this).attr('selected', '')
+                    }
+                })
+                $('input.billing_address_2').attr('value', address_2)
+            }
+            if (district = localStorage.getItem('district')) {
+                $('select[name="calc_shipping_district"]').html(district)
+                $('select[name="calc_shipping_district"]').on('change', function () {
+                    var target = $(this).children('option:selected')
+                    target.attr('selected', '')
+                    $('select[name="calc_shipping_district"] option').not(target).removeAttr('selected')
+                    address_2 = target.text()
+                    $('input.billing_address_2').attr('value', address_2)
+                    district = $('select[name="calc_shipping_district"]').html()
+                    localStorage.setItem('district', district)
+                    localStorage.setItem('address_2_saved', address_2)
+                })
+            }
+            $('select[name="calc_shipping_provinces"]').each(function () {
+                var $this = $(this),
+                    stc = ''
+                c.forEach(function (i, e) {
+                    e += +1
+                    stc += '<option value="' + i + '">' + i + '</option>'
+                    $this.html('<option value="">City</option>' + stc)
+                    if (address_1 = localStorage.getItem('address_1_saved')) {
+                        $('select[name="calc_shipping_provinces"] option').each(function () {
+                            if ($(this).text() == address_1) {
+                                $(this).attr('selected', '')
+                            }
+                        })
+                        $('input.billing_address_1').attr('value', address_1)
+                    }
+                    $this.on('change', function (i) {
+                        i = $this.children('option:selected').index() - 1
+                        var str = '',
+                            r = $this.val()
+                        if (r != '') {
+                            arr[i].forEach(function (el) {
+                                str += '<option value="' + el + '">' + el +
+                                    '</option>'
+                                $('select[name="calc_shipping_district"]').html(
+                                    '<option value="">District</option>' +
+                                    str)
+                            })
+                            var address_1 = $this.children('option:selected').text()
+                            var district = $('select[name="calc_shipping_district"]')
+                                .html()
+                            localStorage.setItem('address_1_saved', address_1)
+                            localStorage.setItem('district', district)
+                            $('select[name="calc_shipping_district"]').on('change',
+                                function () {
+                                    var target = $(this).children('option:selected')
+                                    target.attr('selected', '')
+                                    $('select[name="calc_shipping_district"] option')
+                                        .not(target).removeAttr('selected')
+                                    var address_2 = target.text()
+                                    $('input.billing_address_2').attr('value',
+                                        address_2)
+                                    district = $(
+                                            'select[name="calc_shipping_district"]')
+                                        .html()
+                                    localStorage.setItem('district', district)
+                                    localStorage.setItem('address_2_saved',
+                                        address_2)
+                                })
+                        } else {
+                            $('select[name="calc_shipping_district"]').html(
+                                '<option value="">District</option>')
+                            district = $('select[name="calc_shipping_district"]').html()
+                            localStorage.setItem('district', district)
+                            localStorage.removeItem('address_1_saved', address_1)
+                        }
+                    })
+                })
+            })
+        })
+        //]]>
+    </script>
+    <%- include('../includes-user/end.ejs') %>
